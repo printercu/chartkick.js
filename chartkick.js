@@ -227,6 +227,282 @@
     return a[0].getTime() - b[0].getTime();
   }
 
+  if ("Chart" in window) {
+    var ChartjsAdapter = new function () {
+      this.name = "chartjs";
+
+      var defaultOptions = {
+        chart: {},
+        xAxis: {
+          labels: {
+            style: {
+              fontSize: "12px"
+            }
+          }
+        },
+        yAxis: {
+          title: {
+            text: null
+          },
+          labels: {
+            style: {
+              fontSize: "12px"
+            }
+          }
+        },
+        title: {
+          text: null
+        },
+        credits: {
+          enabled: false
+        },
+        legend: {
+          borderWidth: 0
+        },
+        tooltip: {
+          style: {
+            fontSize: "12px"
+          }
+        },
+        plotOptions: {
+          areaspline: {},
+          series: {
+            marker: {}
+          }
+        }
+      };
+
+      var hideLegend = function (options) {
+        options.legend.enabled = false;
+      };
+
+      var setMin = function (options, min) {
+        options.yAxis.min = min;
+      };
+
+      var setMax = function (options, max) {
+        options.yAxis.max = max;
+      };
+
+      var setStacked = function (options) {
+        options.plotOptions.series.stacking = "normal";
+      };
+
+      var jsOptions = jsOptionsFunc(defaultOptions, hideLegend, setMin, setMax, setStacked);
+
+      this.renderLineChart = function (chart, chartType) {
+
+        var canvas = document.createElement("canvas");
+        canvas.height = chart.element.offsetHeight;
+        canvas.width = chart.element.offsetWidth;
+        chart.element.appendChild(canvas);
+        var ctx = canvas.getContext("2d");
+
+        var data = {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [
+        {
+            label: "My First dataset",
+            strokeColor: "#3366CC",
+            pointColor: "#3366CC",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(220,220,220,1)",
+            data: [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+            label: "My Second dataset",
+            strokeColor: "#DC3912",
+            pointColor: "#DC3912",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)",
+            data: [28, 48, 40, 19, 86, 27, 90]
+        }
+    ]
+};
+var options = {animation: false, datasetFill: false,
+  // tooltipFillColor: "#fff", tooltipFontColor: "#333", tooltipTitleFontColor: "#333"
+}
+var myLineChart = new Chart(ctx).Line(data, options);
+
+        // chartType = chartType || "spline";
+        // var chartOptions = {};
+        // if (chartType === "areaspline") {
+        //   chartOptions = {
+        //     plotOptions: {
+        //       areaspline: {
+        //         stacking: "normal"
+        //       },
+        //       series: {
+        //         marker: {
+        //           enabled: false
+        //         }
+        //       }
+        //     }
+        //   };
+        // }
+        // var options = jsOptions(chart.data, chart.options, chartOptions), data, i, j;
+        // options.xAxis.type = chart.options.discrete ? "category" : "datetime";
+        // options.chart.type = chartType;
+        // options.chart.renderTo = chart.element.id;
+
+        // var series = chart.data;
+        // for (i = 0; i < series.length; i++) {
+        //   data = series[i].data;
+        //   if (!chart.options.discrete) {
+        //     for (j = 0; j < data.length; j++) {
+        //       data[j][0] = data[j][0].getTime();
+        //     }
+        //   }
+        //   series[i].marker = {symbol: "circle"};
+        // }
+        // options.series = series;
+        // new Highcharts.Chart(options);
+      };
+
+      this.renderPieChart = function (chart) {
+
+        var canvas = document.createElement("canvas");
+        canvas.height = chart.element.offsetHeight;
+        canvas.width = chart.element.offsetWidth;
+        chart.element.appendChild(canvas);
+        var ctx = canvas.getContext("2d");
+
+        var data = [];
+        var colors = ["#3366CC",
+"#DC3912",
+"#FF9900",
+"#109618",
+"#990099",
+"#3B3EAC",
+"#0099C6",
+"#DD4477"];
+        for (var i in chart.data) {
+          data.push({label: chart.data[i][0], value: chart.data[i][1], color: colors[i]});
+        }
+
+        // console.log(chart.data)
+
+// var data = [
+//     {
+//         value: 300,
+//         color:"#F7464A",
+//         highlight: "#FF5A5E",
+//         label: "Red"
+//     },
+//     {
+//         value: 50,
+//         color: "#46BFBD",
+//         highlight: "#5AD3D1",
+//         label: "Green"
+//     },
+//     {
+//         value: 100,
+//         color: "#FDB45C",
+//         highlight: "#FFC870",
+//         label: "Yellow"
+//     }
+// ]
+var options = {animation: false};
+var myPieChart = new Chart(ctx).Pie(data,options);
+$(chart.element).append(myPieChart.generateLegend())
+
+        // var chartOptions = {};
+        // if (chart.options.colors) {
+        //   chartOptions.colors = chart.options.colors;
+        // }
+        // var options = merge(merge(defaultOptions, chartOptions), chart.options.library || {});
+        // options.chart.renderTo = chart.element.id;
+        // options.series = [{
+        //   type: "pie",
+        //   name: "Value",
+        //   data: chart.data
+        // }];
+        // new Highcharts.Chart(options);
+      };
+
+      this.renderColumnChart = function (chart, chartType) {
+
+        var canvas = document.createElement("canvas");
+        canvas.height = chart.element.offsetHeight;
+        canvas.width = chart.element.offsetWidth;
+        chart.element.appendChild(canvas);
+        var ctx = canvas.getContext("2d");
+
+
+
+        var data = {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [
+        {
+            label: "My First dataset",
+            fillColor: "#3366CC",
+            strokeColor: "#3366CC",
+            // highlightFill: "rgba(220,220,220,0.75)",
+            // highlightStroke: "rgba(220,220,220,1)",
+            data: [65, 59, 80, 81, 56, 55, 40]
+        }
+    ]
+};
+var options = {animation: false, barValueSpacing: 20};
+var myBarChart = new Chart(ctx).Bar(data, options);
+
+        // var chartType = chartType || "column";
+        // var series = chart.data;
+        // var options = jsOptions(series, chart.options), i, j, s, d, rows = [];
+        // options.chart.type = chartType;
+        // options.chart.renderTo = chart.element.id;
+
+        // for (i = 0; i < series.length; i++) {
+        //   s = series[i];
+
+        //   for (j = 0; j < s.data.length; j++) {
+        //     d = s.data[j];
+        //     if (!rows[d[0]]) {
+        //       rows[d[0]] = new Array(series.length);
+        //     }
+        //     rows[d[0]][i] = d[1];
+        //   }
+        // }
+
+        // var categories = [];
+        // for (i in rows) {
+        //   if (rows.hasOwnProperty(i)) {
+        //     categories.push(i);
+        //   }
+        // }
+        // options.xAxis.categories = categories;
+
+        // var newSeries = [];
+        // for (i = 0; i < series.length; i++) {
+        //   d = [];
+        //   for (j = 0; j < categories.length; j++) {
+        //     d.push(rows[categories[j]][i] || 0);
+        //   }
+
+        //   newSeries.push({
+        //     name: series[i].name,
+        //     data: d
+        //   });
+        // }
+        // options.series = newSeries;
+
+        // new Highcharts.Chart(options);
+      };
+
+      // var self = this;
+
+      // this.renderBarChart = function (chart) {
+      //   self.renderColumnChart(chart, "bar");
+      // };
+
+      // this.renderAreaChart = function (chart) {
+      //   self.renderLineChart(chart, "areaspline");
+      // };
+    };
+    adapters.push(ChartjsAdapter);
+  }
   if ("Highcharts" in window) {
     var HighchartsAdapter = new function () {
       var Highcharts = window.Highcharts;
