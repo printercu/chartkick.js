@@ -322,7 +322,13 @@
     ]
 };
 var options = {animation: false, datasetFill: false,
-  // tooltipFillColor: "#fff", tooltipFontColor: "#333", tooltipTitleFontColor: "#333"
+  // tooltipFillColor: "#fff", tooltipFontColor: "#333", tooltipTitleFontColor: "#333",
+  bezierCurve : false, pointHitDetectionRadius: 50,
+  // scaleStartValue: 0,
+  scaleBeginAtZero: true,
+  scaleShowVerticalLines: false,
+  responsive: true,
+  maintainAspectRatio: false
 }
 var myLineChart = new Chart(ctx).Line(data, options);
 
@@ -442,7 +448,16 @@ $(chart.element).append(myPieChart.generateLegend())
             // highlightFill: "rgba(220,220,220,0.75)",
             // highlightStroke: "rgba(220,220,220,1)",
             data: [65, 59, 80, 81, 56, 55, 40]
+        },
+        {
+            label: "My First dataset",
+            fillColor: "#DC3912",
+            strokeColor: "#DC3912",
+            // highlightFill: "rgba(220,220,220,0.75)",
+            // highlightStroke: "rgba(220,220,220,1)",
+            data: [80, 81, 56, 55, 40, 65, 59]
         }
+
     ]
 };
 var options = {animation: false, barValueSpacing: 20};
@@ -491,15 +506,15 @@ var myBarChart = new Chart(ctx).Bar(data, options);
         // new Highcharts.Chart(options);
       };
 
-      // var self = this;
+      var self = this;
 
       // this.renderBarChart = function (chart) {
       //   self.renderColumnChart(chart, "bar");
       // };
 
-      // this.renderAreaChart = function (chart) {
-      //   self.renderLineChart(chart, "areaspline");
-      // };
+      this.renderAreaChart = function (chart) {
+        self.renderLineChart(chart, "areaspline");
+      };
     };
     adapters.push(ChartjsAdapter);
   }
